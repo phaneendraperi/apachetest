@@ -1,0 +1,7 @@
+image:
+  repository: httpd
+  tag: 2.4
+service:
+  port: 80
+  type: NodePort
+replicas: 1
