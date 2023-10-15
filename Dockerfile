@@ -5,7 +5,7 @@ FROM centos:7
 RUN yum -y update && \
     yum -y install httpd && \
     yum clean all
-
+USER root
 # Create a sample index.html file
 RUN echo "Hello, Apache on CentOS!" > /var/www/html/index.html
 
