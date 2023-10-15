@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    def dockerImage = docker.build("your-dockerhub-username/your-image-name:${env.BUILD_ID}")
+                    dockerImage.push()
+                }
+            }
+        }
+
+        stage('Package Helm Chart') {
+            steps {
+                sh 'helm package path-to-your-helm-chart'
+            }
+        }
+
+        stage('Deploy Helm Chart to Minikube') {
+            steps {
+                sh 'helm install your-release-name path-to-your-helm-chart-*.tgz --set image.repository=your-dockerhub-username/your-image-name,image.tag=${env.BUILD_ID}'
+            }
+        }
+    }
+}
